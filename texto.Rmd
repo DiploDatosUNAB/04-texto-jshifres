@@ -1,6 +1,7 @@
 ---
 title: "Texto"
-date: "2023-07-28"
+author: "Juan"
+date: "2023-08-16"
 output: html_document
 ---
 
@@ -15,18 +16,21 @@ library(dplyr)
 En los siguientes gráficos, agregá título, etiquetas de los ejes y texto alternativo: 
 
 ```{r}
-#' fig.alt: ____
+#' fig.alt: Cantidad de pinguinos por especie, la Adelia es la especie con más cantidad de ejemplares.
+dataPinguinos<-pinguinos
 ggplot(pinguinos, aes(especie)) +
   geom_bar() +
-  labs(title = ____,
-       x = ____
-       y = ____)
+  labs(title = "Cantidad de pinguinos por especie",
+       x = "Especie",
+       y = "Cantidad")
 ```
 
 
 ```{r}
 ggplot(pinguinos, aes(isla)) +
-  geom_bar(aes(fill = sexo), position = "dodge")
+  geom_bar(aes(fill = sexo), position = "dodge")+
+  geom_text(aes(group = sexo,label=..count..), stat='count', position = position_dodge(.9), vjust = -0.2)
+
 ```
 
 
@@ -55,12 +59,18 @@ Descomentá la línea `ggforce::geom_mark_circle(...` y completá el filtro para
 No te olvides de también nombrar los ejes y escribir el texto alternativo!
  
 ```{r}
-paises |> 
+
+#' fig.alt: Esperanza de vida por pais segun producto bruto interno por capita.
+
+  paises |> 
   filter(anio == max(anio)) |> 
   ggplot(aes(pib_per_capita, esperanza_de_vida)) +
   geom_point() +
-  # ggforce::geom_mark_circle(aes(filter = ____, label = pais, group = pais)) +
-  NULL
+  ggforce::geom_mark_circle(aes(filter = (pib_per_capita>9000 & esperanza_de_vida<60), label = pais, group = pais)) +
+  NULL +
+  labs(title = "Esperanza de vida segun PBI por capita",
+       x = "PBI por capita",
+       y = "Esperanza de vida")
   
   
 ```
